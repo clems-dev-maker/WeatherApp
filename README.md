@@ -81,6 +81,9 @@ L'application permet de consulter la météo actuelle de n'importe quelle ville,
 
 ![Favoris et historique](assets/screenshots/weather_home_2.png)
 ![Favoris et historique](assets/screenshots/weather_forecast_2.png)
+
+### GIF de démonstration
+![gif de démnonstration](assets/video/weather_app_record.gif)
 ---
 
 ## 🚀 Installation
