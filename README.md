@@ -58,3 +58,20 @@ Join our community of developers creating universal apps.
 - [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
 - [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
 >>>>>>> cda2a67 (Initial commit)
+
+# WeatherApp
+
+Application météo développée avec React Native et Expo.
+
+## Fonctionnalités
+
+- Géolocalisation
+- Recherche par ville
+- Prévisions 5 jours
+- Favoris
+- Température min/max
+- Lever/coucher du soleil
+
+## Captures d'écran
+
+(screenshots ici)
