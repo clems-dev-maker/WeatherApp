@@ -1,98 +1,328 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useEffect, useState } from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  ScrollView,
+  Text,
+  View,
+} from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import * as Location from "expo-location";
+import { LinearGradient } from "expo-linear-gradient";
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+import WeatherCard from "../components/WeatherCard";
+import ForecastCard from "../components/ForecastCard";
+import SearchBar from "../components/SearchBar";
+import FavoriteCities from "../components/FavoriteCities";
+
+import {
+  getWeatherByCity,
+  getWeatherByCoords,
+  getForecastByCity,
+} from "../services/weatherApi";
+
+import { getWeatherGradient } from "../utils/weatherTheme";
+
+const FAVORITES_STORAGE_KEY = "favorite_cities";
 
 export default function HomeScreen() {
+  const [weather, setWeather] = useState<any>(null);
+  const [forecast, setForecast] = useState<any[]>([]);
+  const [favorites, setFavorites] = useState<string[]>([]);
+
+  const [loading, setLoading] = useState(true);
+
+  const [city, setCity] = useState("");
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    const initializeApp = async () => {
+      try {
+        const storedFavorites =
+          await AsyncStorage.getItem(
+            FAVORITES_STORAGE_KEY
+          );
+
+        if (storedFavorites) {
+          setFavorites(
+            JSON.parse(storedFavorites)
+          );
+        }
+
+        const { status } =
+          await Location.requestForegroundPermissionsAsync();
+
+        if (status !== "granted") {
+          const weatherData =
+            await getWeatherByCity("Paris");
+
+          const forecastData =
+            await getForecastByCity("Paris");
+
+          setWeather(weatherData);
+          setForecast(forecastData.list);
+
+          return;
+        }
+
+        const location =
+          await Location.getCurrentPositionAsync({});
+
+        const weatherData =
+          await getWeatherByCoords(
+            location.coords.latitude,
+            location.coords.longitude
+          );
+
+        const forecastData =
+          await getForecastByCity(
+            weatherData.name
+          );
+
+        setWeather(weatherData);
+        setForecast(forecastData.list);
+      } catch (error) {
+        console.error(error);
+
+        try {
+          const weatherData =
+            await getWeatherByCity("Paris");
+
+          const forecastData =
+            await getForecastByCity("Paris");
+
+          setWeather(weatherData);
+          setForecast(forecastData.list);
+        } catch (fallbackError) {
+          console.error(fallbackError);
+        }
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    initializeApp();
+  }, []);
+
+  const saveFavorites = async (
+    newFavorites: string[]
+  ) => {
+    setFavorites(newFavorites);
+
+    await AsyncStorage.setItem(
+      FAVORITES_STORAGE_KEY,
+      JSON.stringify(newFavorites)
+    );
+  };
+
+  const addFavoriteCity = async () => {
+    if (!weather?.name) return;
+
+    const cityName = weather.name;
+
+    if (favorites.includes(cityName)) {
+      return;
+    }
+
+    const newFavorites = [
+      ...favorites,
+      cityName,
+    ];
+
+    await saveFavorites(newFavorites);
+  };
+
+  const removeFavoriteCity = async (
+    cityName: string
+  ) => {
+    const newFavorites =
+      favorites.filter(
+        (city) => city !== cityName
+      );
+
+    await saveFavorites(newFavorites);
+  };
+
+  const selectFavoriteCity = async (
+    cityName: string
+  ) => {
+    try {
+      setError("");
+
+      const weatherData =
+        await getWeatherByCity(cityName);
+
+      const forecastData =
+        await getForecastByCity(cityName);
+
+      setWeather(weatherData);
+      setForecast(forecastData.list);
+    } catch (error) {
+      setError(
+        "Impossible de charger cette ville."
+      );
+    }
+  };
+
+  const searchWeather = async () => {
+    if (!city.trim()) return;
+
+    try {
+      setError("");
+
+      const weatherData =
+        await getWeatherByCity(city);
+
+      const forecastData =
+        await getForecastByCity(city);
+
+      setWeather(weatherData);
+      setForecast(forecastData.list);
+
+      setCity("");
+    } catch (error) {
+      console.error(error);
+
+      setError(
+        "Ville introuvable"
+      );
+    }
+  };
+
+  if (loading) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <ActivityIndicator size="large" />
+      </View>
+    );
+  }
+
+  if (!weather) {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Text>
+          Impossible de récupérer la météo.
+        </Text>
+      </View>
+    );
+  }
+
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <LinearGradient
+      colors={
+        getWeatherGradient(
+          weather.weather[0].main
+        ) as [string, string]
+      }
+      style={{
+        flex: 1,
+      }}
+    >
+      <ScrollView
+        contentContainerStyle={{
+          padding: 20,
+          alignItems: "center",
+        }}
+      >
+        <SearchBar
+          value={city}
+          onChangeText={setCity}
+          onSubmit={searchWeather}
+        />
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+        {error ? (
+          <Text
+            style={{
+              color: "#FFFFFF",
+              marginBottom: 15,
+            }}
+          >
+            {error}
+          </Text>
+        ) : null}
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
+        <FavoriteCities
+          favorites={favorites}
+          onSelectCity={
+            selectFavoriteCity
+          }
+          onRemoveCity={
+            removeFavoriteCity
+          }
+        />
 
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <Pressable
+          onPress={addFavoriteCity}
+          style={{
+            backgroundColor:
+              "rgba(255,255,255,0.2)",
+            paddingHorizontal: 18,
+            paddingVertical: 10,
+            borderRadius: 999,
+            marginBottom: 15,
+          }}
+        >
+          <Text
+            style={{
+              color: "#FFFFFF",
+              fontWeight: "700",
+            }}
+          >
+            ⭐ Ajouter {weather.name}
+            {" "}aux favoris
+          </Text>
+        </Pressable>
+
+        <WeatherCard
+          city={weather.name}
+          temperature={weather.main.temp}
+          description={
+            weather.weather[0].description
+          }
+          icon={
+            weather.weather[0].icon
+          }
+          feelsLike={
+            weather.main.feels_like
+          }
+          humidity={
+            weather.main.humidity
+          }
+          windSpeed={
+            weather.wind.speed
+          }
+          tempMin={
+            weather.main.temp_min
+          }
+          tempMax={
+            weather.main.temp_max
+          }
+          sunrise={
+            weather.sys.sunrise
+          }
+          sunset={
+            weather.sys.sunset
+          }
+        />
+
+        <ForecastCard
+          forecast={forecast}
+        />
+      </ScrollView>
+    </LinearGradient>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
