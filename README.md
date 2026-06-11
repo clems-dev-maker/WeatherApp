@@ -71,11 +71,11 @@ L'application permet de consulter la météo actuelle de n'importe quelle ville,
 
 ### Écran principal
 
-![Écran principal](assets/screenshots/home.png)
+![Écran principal](assets/screenshots/weather_home.png)
 
 ### Prévisions météo
 
-![Prévisions météo](assets/screenshots/forecast.png)
+![Prévisions météo](assets/screenshots/weather_forecast.png)
 
 ### Favoris et historique
 
