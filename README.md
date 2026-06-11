@@ -77,3 +77,4 @@ Application météo développée avec React Native et Expo.
 (screenshots ici)
 
 ![Application météo - écran principal](assets/screenshots/weather_home.png)
+![Application météo - écran principal](assets/screenshots/weather_forecast.png)
