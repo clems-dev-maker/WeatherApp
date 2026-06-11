@@ -1,83 +1,179 @@
-<<<<<<< HEAD
-# WeatherApp
-=======
-# Welcome to your Expo app 👋
+# 🌤️ WeatherApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Application météo moderne développée avec **React Native**, **Expo** et **TypeScript**.
 
-## Get started
+L'application permet de consulter la météo actuelle de n'importe quelle ville, d'obtenir les prévisions sur 5 jours, d'utiliser la géolocalisation de l'appareil et de sauvegarder ses villes favorites.
 
-1. Install dependencies
+---
 
-   ```bash
-   npm install
-   ```
+## ✨ Fonctionnalités
 
-2. Start the app
+### 🌍 Météo en temps réel
 
-   ```bash
-   npx expo start
-   ```
+* Géolocalisation automatique
+* Recherche de ville
+* Température actuelle
+* Température ressentie
+* Humidité
+* Vitesse du vent en km/h
+* Température minimale et maximale
+* Lever et coucher du soleil
 
-In the output, you'll find options to open the app in a
+### 📅 Prévisions météo
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+* Prévisions sur 5 jours
+* Icônes météo
+* Description des conditions météorologiques
+* Températures min/max quotidiennes
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### ⭐ Expérience utilisateur
 
-## Get a fresh project
+* Villes favorites persistantes
+* Historique des recherches
+* Sauvegarde locale avec AsyncStorage
+* Gestion des erreurs
+* Interface responsive
+* Fond dynamique selon les conditions météo
 
-When you're ready, run:
+---
+
+## 🛠️ Technologies utilisées
+
+### Frontend
+
+* React Native
+* Expo
+* TypeScript
+
+### Navigation
+
+* Expo Router
+
+### API
+
+* OpenWeatherMap API
+
+### Stockage local
+
+* AsyncStorage
+
+### Géolocalisation
+
+* Expo Location
+
+### Requêtes HTTP
+
+* Axios
+
+---
+
+## 📸 Captures d'écran
+
+### Écran principal
+
+![Écran principal](assets/screenshots/home.png)
+
+### Prévisions météo
+
+![Prévisions météo](assets/screenshots/forecast.png)
+
+### Favoris et historique
+
+![Favoris et historique](assets/screenshots/weather_home_2.png)
+![Favoris et historique](assets/screenshots/weather_forecast_2.png)
+---
+
+## 🚀 Installation
+
+### Cloner le projet
 
 ```bash
-npm run reset-project
+git clone https://github.com/clems-dev-maker/WeatherApp.git
+cd WeatherApp
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+### Installer les dépendances
 
-### Other setup steps
+```bash
+npm install
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Configurer les variables d'environnement
 
-## Learn more
+Créer un fichier :
 
-To learn more about developing your project with Expo, look at the following resources:
+```env
+.env
+```
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Ajouter :
 
-## Join the community
+```env
+EXPO_PUBLIC_OPENWEATHER_API_KEY=YOUR_API_KEY
+```
 
-Join our community of developers creating universal apps.
+### Lancer l'application
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
->>>>>>> cda2a67 (Initial commit)
+```bash
+npx expo start
+```
 
-# WeatherApp
+---
 
-Application météo développée avec React Native et Expo.
+## 📂 Structure du projet
 
-## Fonctionnalités
+```text
+src
+│
+├── app
+│   └── index.tsx
+│
+├── components
+│   ├── WeatherCard.tsx
+│   ├── ForecastCard.tsx
+│   ├── SearchBar.tsx
+│   ├── FavoriteCities.tsx
+│   └── SearchHistory.tsx
+│
+├── services
+│   └── weatherApi.ts
+│
+├── utils
+│   └── weatherTheme.ts
+│
+└── hooks
+```
 
-- Géolocalisation
-- Recherche par ville
-- Prévisions 5 jours
-- Favoris
-- Température min/max
-- Lever/coucher du soleil
+---
 
-## Captures d'écran
+## 🔒 Sécurité
 
-(screenshots ici)
+Le fichier `.env` est exclu du dépôt Git afin de protéger les clés API.
 
-![Application météo - écran principal](assets/screenshots/weather_home.png)
-[Application météo - écran principal](assets/screenshots/weather_home_2.png)
-![Application météo - écran principal](assets/screenshots/weather_forecast.png)
-![Application météo - écran principal](assets/screenshots/weather_forecast_2.png)
-!
+Un fichier `.env.example` est fourni pour faciliter la configuration du projet.
+
+---
+
+## 🎯 Améliorations futures
+
+* Mode sombre / clair
+* Animations météo
+* Qualité de l'air
+* Indice UV
+* Notifications météo
+* Widget écran d'accueil
+* Support multilingue
+
+---
+
+## 👨‍💻 Auteur
+
+Développé par **Clément Cathala**
+
+GitHub : https://github.com/clems-dev-maker
+
+---
+
+## 📄 Licence
+
+Projet distribué sous licence MIT.
