@@ -287,7 +287,7 @@ export default function HomeScreen() {
           >
             {isCurrentCityFavorite
               ? `⭐ ${weather.name} est déjà dans les favoris`
-              : `⭐ Ajouter ${weather.name} aux favoris`}
+              : `⭐ ${weather.name} `}
           </Text>
         </Pressable>
 
