@@ -52,6 +52,24 @@ export default function HomeScreen() {
   const colorScheme = useColorScheme();
   const isDarkMode = colorScheme === "dark";
 
+  const loadEnvironmentalData = async (lat: number, lon: number) => {
+  try {
+    const airData = await getAirPollutionByCoords(lat, lon);
+    setAirQuality(airData.list[0]);
+
+
+    try {
+      const uvData = await getUvIndexByCoords(lat, lon);
+      setUvIndex(uvData);
+    } catch (uvError) {
+      console.log("Indice UV indisponible :", uvError);
+      setUvIndex(null);
+    }
+  } catch (error) {
+    console.log("Qualité de l'air indisponible :", error);
+  }
+};
+
   useEffect(() => {
     const initializeApp = async () => {
       try {
@@ -219,23 +237,7 @@ export default function HomeScreen() {
     }
   };
 
-  const loadEnvironmentalData = async (lat: number, lon: number) => {
-  try {
-    const airData = await getAirPollutionByCoords(lat, lon);
-    setAirQuality(airData.list[0]);
-
-
-    try {
-      const uvData = await getUvIndexByCoords(lat, lon);
-      setUvIndex(uvData);
-    } catch (uvError) {
-      console.log("Indice UV indisponible :", uvError);
-      setUvIndex(null);
-    }
-  } catch (error) {
-    console.log("Qualité de l'air indisponible :", error);
-  }
-};
+  
 
   const isCurrentCityFavorite = weather
     ? favorites.includes(weather.name)
