@@ -31,3 +31,19 @@ export const getForecastByCity = async (
 
   return response.data;
 };
+
+export const getAirPollutionByCoords = async (lat: number, lon: number) => {
+  const response = await axios.get(
+    `${BASE_URL}/air_pollution?lat=${lat}&lon=${lon}&appid=${API_KEY}`
+  );
+
+  return response.data;
+};
+
+export const getUvIndexByCoords = async (lat: number, lon: number) => {
+  const response = await axios.get(
+    `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,daily,alerts&appid=${API_KEY}&units=metric&lang=fr`
+  );
+
+  return response.data.current.uvi;
+};

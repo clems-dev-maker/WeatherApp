@@ -17,6 +17,14 @@ import SearchBar from "../components/SearchBar";
 import FavoriteCities from "../components/FavoriteCities";
 import SearchHistory from "../components/SearchHistory";
 import TemperatureChart from "../components/TemperatureChart";
+import { useColorScheme } from "react-native";
+import AirQualityCard from "../components/AirQualityCard";
+import UvIndexCard from "../components/UvIndexCard";
+
+import {
+  getAirPollutionByCoords,
+  getUvIndexByCoords,
+} from "../services/weatherApi";
 
 import {
   getWeatherByCity,
@@ -39,6 +47,10 @@ export default function HomeScreen() {
 
   const [city, setCity] = useState("");
   const [error, setError] = useState("");
+  const [airQuality, setAirQuality] = useState<any>(null);
+  const [uvIndex, setUvIndex] = useState<number | null>(null);
+  const colorScheme = useColorScheme();
+  const isDarkMode = colorScheme === "dark";
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -69,6 +81,11 @@ export default function HomeScreen() {
           setWeather(weatherData);
           setForecast(forecastData.list);
 
+          await loadEnvironmentalData(
+            weatherData.coord.lat,
+            weatherData.coord.lon,
+          );
+
           return;
         }
 
@@ -92,6 +109,11 @@ export default function HomeScreen() {
 
           setWeather(weatherData);
           setForecast(forecastData.list);
+
+          await loadEnvironmentalData(
+            weatherData.coord.lat,
+            weatherData.coord.lon,
+          );
         } catch (fallbackError) {
           console.error(fallbackError);
         }
@@ -165,9 +187,10 @@ export default function HomeScreen() {
 
       setWeather(weatherData);
       setForecast(forecastData.list);
+
+      await loadEnvironmentalData(weatherData.coord.lat, weatherData.coord.lon);
     } catch (error) {
       console.error(error);
-
       setError("Impossible de charger cette ville.");
     }
   };
@@ -184,6 +207,8 @@ export default function HomeScreen() {
       setWeather(weatherData);
       setForecast(forecastData.list);
 
+      await loadEnvironmentalData(weatherData.coord.lat, weatherData.coord.lon);
+
       await saveSearchHistory(weatherData.name);
 
       setCity("");
@@ -193,6 +218,24 @@ export default function HomeScreen() {
       setError("Ville introuvable");
     }
   };
+
+  const loadEnvironmentalData = async (lat: number, lon: number) => {
+  try {
+    const airData = await getAirPollutionByCoords(lat, lon);
+    setAirQuality(airData.list[0]);
+
+
+    try {
+      const uvData = await getUvIndexByCoords(lat, lon);
+      setUvIndex(uvData);
+    } catch (uvError) {
+      console.log("Indice UV indisponible :", uvError);
+      setUvIndex(null);
+    }
+  } catch (error) {
+    console.log("Qualité de l'air indisponible :", error);
+  }
+};
 
   const isCurrentCityFavorite = weather
     ? favorites.includes(weather.name)
@@ -228,7 +271,9 @@ export default function HomeScreen() {
 
   return (
     <LinearGradient
-      colors={getWeatherGradient(weather.weather[0].main) as [string, string]}
+      colors={isDarkMode
+      ? ["#020617", "#0F172A"]
+      : getWeatherGradient(weather.weather[0].main)}
       style={{ flex: 1 }}
     >
       <ScrollView
@@ -308,6 +353,16 @@ export default function HomeScreen() {
 
         <ForecastCard forecast={forecast} />
         <TemperatureChart forecast={forecast} />
+
+        {airQuality ? (
+          <AirQualityCard
+            aqi={airQuality.main.aqi}
+            pm25={airQuality.components.pm2_5}
+            pm10={airQuality.components.pm10}
+          />
+        ) : null}
+
+        {uvIndex !== null ? <UvIndexCard uvIndex={uvIndex} /> : null}
       </ScrollView>
     </LinearGradient>
   );
