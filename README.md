@@ -159,10 +159,10 @@ Un fichier `.env.example` est fourni pour faciliter la configuration du projet.
 
 ## 🎯 Améliorations futures
 
-* Mode sombre / clair
+* Mode sombre / clair [x]
 * Animations météo
-* Qualité de l'air
-* Indice UV
+* Qualité de l'air [x]
+* Indice UV [x]
 * Notifications météo
 * Widget écran d'accueil
 * Support multilingue
