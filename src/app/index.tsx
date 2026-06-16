@@ -16,6 +16,7 @@ import ForecastCard from "../components/ForecastCard";
 import SearchBar from "../components/SearchBar";
 import FavoriteCities from "../components/FavoriteCities";
 import SearchHistory from "../components/SearchHistory";
+import TemperatureChart from "../components/TemperatureChart";
 
 import {
   getWeatherByCity,
@@ -306,6 +307,7 @@ export default function HomeScreen() {
         />
 
         <ForecastCard forecast={forecast} />
+        <TemperatureChart forecast={forecast} />
       </ScrollView>
     </LinearGradient>
   );
