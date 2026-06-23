@@ -5,6 +5,9 @@ import {
   Text,
   View,
 } from "react-native";
+import Animated, {
+  FadeInDown,
+} from "react-native-reanimated";
 
 type ForecastItem = {
   dt_txt: string;
@@ -32,7 +35,10 @@ export default function ForecastCard({ forecast }: Props) {
   }
 
   return (
-    <View style={styles.container}>
+    <Animated.View
+      entering={FadeInDown.duration(600).delay(150)}
+      style={styles.container}
+    >
       <Text style={styles.title}>Prévisions 5 jours</Text>
 
       <FlatList
@@ -40,11 +46,14 @@ export default function ForecastCard({ forecast }: Props) {
         showsHorizontalScrollIndicator={false}
         data={dailyForecast}
         keyExtractor={(item) => item.dt_txt}
-        renderItem={({ item }) => {
+        renderItem={({ item,index }) => {
           const date = new Date(item.dt_txt.replace(" ", "T"));
 
           return (
-            <View style={styles.dayCard}>
+            <Animated.View
+              entering={FadeInDown.duration(500).delay(index * 120)}
+              style={styles.dayCard}
+            >
               <Text style={styles.day}>
                 {date.toLocaleDateString("fr-FR", {
                   weekday: "short",
@@ -73,11 +82,11 @@ export default function ForecastCard({ forecast }: Props) {
                   Max {Math.round(item.main.temp_max)}°
                 </Text>
               </View>
-            </View>
+            </Animated.View>
           );
         }}
       />
-    </View>
+    </Animated.View>
   );
 }
 

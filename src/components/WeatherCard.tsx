@@ -1,4 +1,7 @@
 import { Image, StyleSheet, Text, View } from "react-native";
+import Animated, {
+  FadeInDown,
+} from "react-native-reanimated";
 
 type WeatherCardProps = {
   city: string;
@@ -42,7 +45,10 @@ export default function WeatherCard({
 
 
   return (
-    <View style={styles.card}>
+    <Animated.View
+      entering={FadeInDown.duration(700).springify()}
+      style={styles.card}
+    >
       <Text style={styles.city}>{city}</Text>
 
       <Text style={styles.date}>
@@ -55,22 +61,16 @@ export default function WeatherCard({
 
       <Image source={{ uri: iconUrl }} style={styles.icon} />
 
-      <Text style={styles.temperature}>
-        {Math.round(temperature)}°C
-      </Text>
+      <Text style={styles.temperature}>{Math.round(temperature)}°C</Text>
 
       <Text style={styles.description}>{description}</Text>
 
       <View style={styles.minMaxContainer}>
-        <Text style={styles.minMaxText}>
-          Min {Math.round(tempMin)}°C
-        </Text>
+        <Text style={styles.minMaxText}>Min {Math.round(tempMin)}°C</Text>
 
         <Text style={styles.minMaxSeparator}>|</Text>
 
-        <Text style={styles.minMaxText}>
-          Max {Math.round(tempMax)}°C
-        </Text>
+        <Text style={styles.minMaxText}>Max {Math.round(tempMax)}°C</Text>
       </View>
 
       <View style={styles.detailsContainer}>
@@ -103,7 +103,7 @@ export default function WeatherCard({
           <Text style={styles.value}>{formatTime(sunset)}</Text>
         </View>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
