@@ -163,7 +163,7 @@ Un fichier `.env.example` est fourni pour faciliter la configuration du projet.
 * Animations météo [x]
 * Qualité de l'air [x]
 * Indice UV [x]
-* Notifications météo
+* Notifications météo[x]
 * Widget écran d'accueil
 * Support multilingue
 
