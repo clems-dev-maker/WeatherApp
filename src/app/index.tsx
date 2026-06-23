@@ -32,6 +32,11 @@ import {
   getForecastByCity,
 } from "../services/weatherApi";
 
+import {
+  setupNotifications,
+  checkWeatherAlerts,
+} from "../services/notificationService";
+
 import { getWeatherGradient } from "../utils/weatherTheme";
 
 const FAVORITES_STORAGE_KEY = "favorite_cities";
@@ -73,6 +78,7 @@ export default function HomeScreen() {
   useEffect(() => {
     const initializeApp = async () => {
       try {
+        await setupNotifications();
         const storedFavorites = await AsyncStorage.getItem(
           FAVORITES_STORAGE_KEY
         );
@@ -99,6 +105,8 @@ export default function HomeScreen() {
           setWeather(weatherData);
           setForecast(forecastData.list);
 
+          await checkWeatherAlerts(weatherData, forecastData.list);
+
           await loadEnvironmentalData(
             weatherData.coord.lat,
             weatherData.coord.lon,
@@ -118,6 +126,7 @@ export default function HomeScreen() {
 
         setWeather(weatherData);
         setForecast(forecastData.list);
+        await checkWeatherAlerts(weatherData, forecastData.list);
       } catch (error) {
         console.error(error);
 
@@ -127,6 +136,7 @@ export default function HomeScreen() {
 
           setWeather(weatherData);
           setForecast(forecastData.list);
+          await checkWeatherAlerts(weatherData, forecastData.list);
 
           await loadEnvironmentalData(
             weatherData.coord.lat,
@@ -205,6 +215,7 @@ export default function HomeScreen() {
 
       setWeather(weatherData);
       setForecast(forecastData.list);
+      await checkWeatherAlerts(weatherData, forecastData.list);
 
       await loadEnvironmentalData(weatherData.coord.lat, weatherData.coord.lon);
     } catch (error) {
@@ -221,6 +232,7 @@ export default function HomeScreen() {
 
       const weatherData = await getWeatherByCity(city);
       const forecastData = await getForecastByCity(city);
+      await checkWeatherAlerts(weatherData, forecastData.list);
 
       setWeather(weatherData);
       setForecast(forecastData.list);
