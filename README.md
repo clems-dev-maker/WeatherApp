@@ -160,7 +160,7 @@ Un fichier `.env.example` est fourni pour faciliter la configuration du projet.
 ## 🎯 Améliorations futures
 
 * Mode sombre / clair [x]
-* Animations météo
+* Animations météo [x]
 * Qualité de l'air [x]
 * Indice UV [x]
 * Notifications météo
