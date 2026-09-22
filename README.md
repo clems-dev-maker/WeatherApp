@@ -10,30 +10,30 @@ L'application permet de consulter la météo actuelle de n'importe quelle ville,
 
 ### 🌍 Météo en temps réel
 
-* Géolocalisation automatique
-* Recherche de ville
-* Température actuelle
-* Température ressentie
-* Humidité
-* Vitesse du vent en km/h
-* Température minimale et maximale
-* Lever et coucher du soleil
+- Géolocalisation automatique
+- Recherche de ville
+- Température actuelle
+- Température ressentie
+- Humidité
+- Vitesse du vent en km/h
+- Température minimale et maximale
+- Lever et coucher du soleil
 
 ### 📅 Prévisions météo
 
-* Prévisions sur 5 jours
-* Icônes météo
-* Description des conditions météorologiques
-* Températures min/max quotidiennes
+- Prévisions sur 5 jours
+- Icônes météo
+- Description des conditions météorologiques
+- Températures min/max quotidiennes
 
 ### ⭐ Expérience utilisateur
 
-* Villes favorites persistantes
-* Historique des recherches
-* Sauvegarde locale avec AsyncStorage
-* Gestion des erreurs
-* Interface responsive
-* Fond dynamique selon les conditions météo
+- Villes favorites persistantes
+- Historique des recherches
+- Sauvegarde locale avec AsyncStorage
+- Gestion des erreurs
+- Interface responsive
+- Fond dynamique selon les conditions météo
 
 ---
 
@@ -41,29 +41,29 @@ L'application permet de consulter la météo actuelle de n'importe quelle ville,
 
 ### Frontend
 
-* React Native
-* Expo
-* TypeScript
+- React Native
+- Expo
+- TypeScript
 
 ### Navigation
 
-* Expo Router
+- Expo Router
 
 ### API
 
-* OpenWeatherMap API
+- OpenWeatherMap API
 
 ### Stockage local
 
-* AsyncStorage
+- AsyncStorage
 
 ### Géolocalisation
 
-* Expo Location
+- Expo Location
 
 ### Requêtes HTTP
 
-* Axios
+- Axios
 
 ---
 
@@ -80,103 +80,78 @@ L'application permet de consulter la météo actuelle de n'importe quelle ville,
 ### Favoris et historique
 
 ![Favoris et historique](assets/screenshots/weather_home_2.png)
+
 ![Favoris et historique](assets/screenshots/weather_forecast_2.png)
 
-### GIF de démonstration
-![gif de démnonstration](assets/video/weather_app_record.gif)
+### 🎬 Démonstration
+
+![Démonstration](assets/video/weather_app_record.gif)
+
 ---
 
 ## 🚀 Installation
 
-### Cloner le projet
+### 1. Cloner le projet
 
 ```bash
 git clone https://github.com/clems-dev-maker/WeatherApp.git
 cd WeatherApp
-```
-
-### Installer les dépendances
-
-```bash
+2. Installer les dépendances
 npm install
-```
+3. Configurer les variables d'environnement
 
-### Configurer les variables d'environnement
+Créer un fichier .env à la racine du projet :
 
-Créer un fichier :
-
-```env
-.env
-```
-
-Ajouter :
-
-```env
 EXPO_PUBLIC_OPENWEATHER_API_KEY=YOUR_API_KEY
-```
 
-### Lancer l'application
+⚠️ Remplacez YOUR_API_KEY par votre propre clé API OpenWeatherMap.
 
-```bash
+Ne publiez jamais votre clé API directement dans le dépôt Git.
+
+4. Lancer l'application
 npx expo start
-```
-
----
-
-## 📂 Structure du projet
-
-```text
-src
+📂 Structure du projet
+src/
 │
-├── app
+├── app/
 │   └── index.tsx
 │
-├── components
+├── components/
 │   ├── WeatherCard.tsx
 │   ├── ForecastCard.tsx
 │   ├── SearchBar.tsx
 │   ├── FavoriteCities.tsx
 │   └── SearchHistory.tsx
 │
-├── services
+├── services/
 │   └── weatherApi.ts
 │
-├── utils
+├── utils/
 │   └── weatherTheme.ts
 │
-└── hooks
-```
+└── hooks/
+🔒 Sécurité
 
----
+Le fichier .env est exclu du dépôt Git afin de protéger les clés API.
 
-## 🔒 Sécurité
+Un fichier .env.example est fourni afin de faciliter la configuration du projet.
 
-Le fichier `.env` est exclu du dépôt Git afin de protéger les clés API.
+Exemple :
 
-Un fichier `.env.example` est fourni pour faciliter la configuration du projet.
+EXPO_PUBLIC_OPENWEATHER_API_KEY=YOUR_API_KEY
 
----
+⚠️ Ne partagez jamais une clé API personnelle dans un dépôt public.
 
-## 🎯 Améliorations futures
+🎯 Améliorations futures
+ Mode sombre / clair
+ Animations météo
+ Qualité de l'air
+ Indice UV
+ Notifications météo
+ Widget écran d'accueil
+ Support multilingue
+👨‍💻 Auteur
 
-* Mode sombre / clair [x]
-* Animations météo [x]
-* Qualité de l'air [x]
-* Indice UV [x]
-* Notifications météo[x]
-* Widget écran d'accueil
-* Support multilingue
-
----
-
-## 👨‍💻 Auteur
-
-Développé par **Clément Cathala**
+Développé par Clément Cathala
 
 GitHub : https://github.com/clems-dev-maker
-
----
-
-## 📄 Licence
-
-Projet distribué sous licence MIT.
